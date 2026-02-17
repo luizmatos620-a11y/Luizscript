@@ -1,9 +1,9 @@
--- LUIZ EMOTE V1 🎭 (FIXED)
+-- LUIZ EMOTE V1 - TOUCH FLING EDITION ⚡
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "LUIZ EMOTE V1 🎭",
-   LoadingTitle = "Sincronizando Animações...",
+   Name = "LUIZ FE BYPASS 🎭",
+   LoadingTitle = "Injetando Física Invisível...",
    LoadingSubtitle = "por Luiz",
    ConfigurationSaving = { Enabled = false },
    KeySystem = true,
@@ -18,51 +18,69 @@ local Window = Rayfield:CreateWindow({
 })
 
 local lp = game:GetService("Players").LocalPlayer
+local RunService = game:GetService("RunService")
 
--- Função para garantir que o script funciona mesmo após morrer
-local function getHum()
-    local char = lp.Character or lp.CharacterAdded:Wait()
-    return char:WaitForChild("Humanoid")
-end
+-- --- ABA: BYPASS & FLING ⚠️ ---
+local TabFE = Window:CreateTab("Bypass & Fling ⚠️", 4483362458)
 
-local function PlayAnim(id)
-   local hum = getHum()
-   local anim = Instance.new("Animation")
-   anim.AnimationId = "rbxassetid://"..id
-   local load = hum:LoadAnimation(anim)
-   load:Play()
-end
-
--- --- ABA 1: EMOTES 💃 ---
-local TabEmotes = Window:CreateTab("Emotes 💃", 4483362458)
-
-TabEmotes:CreateButton({
-   Name = "Griddy (R15)",
-   Callback = function() PlayAnim("10916301311") end,
-})
-
-TabEmotes:CreateButton({
-   Name = "Floss",
-   Callback = function() PlayAnim("59174527") end,
-})
-
--- --- ABA 2: MOVIMENTOS REAIS (TODOS VÊEM) ⚠️ ---
-local TabReal = Window:CreateTab("Movimentos Reais ⚠️", 4483362458)
-
-TabReal:CreateToggle({
-   Name = "Spin Bot (Dança Infinita)",
+TabFE:CreateToggle({
+   Name = "Touch Fling (Matar ao Tocar) 💀",
    CurrentValue = false,
    Callback = function(Value)
-      _G.Spin = Value
+      _G.TouchFling = Value
       task.spawn(function()
-         while _G.Spin do
+         while _G.TouchFling do
             if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
-                lp.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(30), 0)
+               local hrp = lp.Character.HumanoidRootPart
+               
+               -- Guarda a velocidade original para não bugar o teu movimento
+               local oldVel = hrp.Velocity
+               
+               -- Aplica a força de Fling (Invisível aos olhos, mas real na física)
+               hrp.Velocity = oldVel + Vector3.new(0, 3000, 0) -- Força vertical oculta
+               hrp.RotVelocity = Vector3.new(0, 100000, 0) -- Rotação extrema invisível
+               
+               -- Noclip para não bugar no chão
+               for _, v in pairs(lp.Character:GetDescendants()) do
+                  if v:IsA("BasePart") then v.CanCollide = false end
+               end
             end
-            task.wait()
+            RunService.Heartbeat:Wait()
          end
       end)
    end,
 })
 
-Rayfield:Notify({Title = "SISTEMA ATUALIZADO", Content = "Se o emote não carregar, tente resetar o personagem!", Duration = 5})
+TabFE:CreateToggle({
+   Name = "Netless (Garantir o Fling) 🌐",
+   CurrentValue = false,
+   Callback = function(Value)
+      _G.Netless = Value
+      task.spawn(function()
+         while _G.Netless do
+            if lp.Character then
+               for _, v in pairs(lp.Character:GetDescendants()) do
+                  if v:IsA("BasePart") then
+                     v.Velocity = Vector3.new(0, -30, 0) -- Mantém a posse da rede
+                  end
+               end
+            end
+            task.wait(0.1)
+         end
+      end)
+   end,
+})
+
+-- --- ABA: EMOTES 💃 ---
+local TabEmotes = Window:CreateTab("Emotes 💃", 4483362458)
+
+TabEmotes:CreateButton({
+   Name = "Griddy (R15)",
+   Callback = function() 
+       local anim = Instance.new("Animation")
+       anim.AnimationId = "rbxassetid://10916301311"
+       lp.Character.Humanoid:LoadAnimation(anim):Play()
+   end,
+})
+
+Rayfield:Notify({Title = "TOUCH FLING ATIVO", Content = "Encoste nos players para eles voarem!", Duration = 5})
